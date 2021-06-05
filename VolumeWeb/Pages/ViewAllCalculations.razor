@@ -1,5 +1,56 @@
-﻿<h3>ViewAllCalculations</h3>
+﻿@page "/ViewAllCalculations"
+@using VolumeWeb.Data
+@using VolumeWeb.Models
+
+@inject NavigationManager NavigationManager
+@inject CalculationService CalculationService
+
+
+
+@if (allVolumes == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <h3>View All Calculations</h3>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Type</th>
+            <th>Height</th>
+            <th>Radius</th>
+            <th>Volume</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var volumeResult in allVolumes)
+        {
+            <tr>
+                <td>@volumeResult.Id</td>
+                <td>@volumeResult.Type</td>
+                <td>@volumeResult.Height</td>
+                <td>@volumeResult.Radius</td>
+                <td>@volumeResult.Volume</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+}
+
 
 @code {
+    private ICollection<VolumeResult> allVolumes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allVolumes = await CalculationService.GetAllCalculationsAsync();
+    }
+    
     
 }

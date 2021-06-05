@@ -18,7 +18,7 @@ namespace VolumeWeb.Data
         }
         
         // GET METHODS
-        public async Task<IList<VolumeResult>> GetAllCalculations()
+        public async Task<IList<VolumeResult>> GetAllCalculationsAsync()
         {
             HttpResponseMessage response = await _httpClient.GetAsync("/calculate");
             if (!response.IsSuccessStatusCode)
@@ -37,7 +37,7 @@ namespace VolumeWeb.Data
         
         
         // POST METHODS
-        public async Task RequestNewCalculation(VolumeResult newVolume, string selectedType)
+        public async Task RequestNewCalculationAsync(VolumeResult newVolume, string selectedType)
         {
             var jsonVolume = new StringContent(
                 JsonSerializer.Serialize(newVolume, typeof(VolumeResult), new JsonSerializerOptions(JsonSerializerDefaults.Web)), Encoding.UTF8, "application/json");

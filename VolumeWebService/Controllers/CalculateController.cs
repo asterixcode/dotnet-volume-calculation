@@ -39,7 +39,7 @@ namespace VolumeWebService.Controllers
         }
         
         
-        [HttpGet]
+        [HttpPost]
         [Route("cylinder")]
         public async Task<ActionResult<VolumeResult>> VolumeCylinder([FromQuery] decimal height, [FromQuery] decimal radius)
         {
@@ -54,7 +54,7 @@ namespace VolumeWebService.Controllers
             _volumeDbContext.Add(volumeResult);
             await _volumeDbContext.SaveChangesAsync();
             
-            return volumeResult;
+            return Created("/cylinder", volumeResult);
         }
         
         
@@ -67,12 +67,12 @@ namespace VolumeWebService.Controllers
                 Type = "Cone",
                 Height = height,
                 Radius = radius,
-                Volume = calculator.CalculateVolumeCylinder(height, radius)
+                Volume = calculator.CalculateVolumeCone(height, radius)
             };
             _volumeDbContext.Add(volumeResult);
             await _volumeDbContext.SaveChangesAsync();
-            
-            return Created(volumeResult);
+
+            return Created("/cone", volumeResult);
         }
     }
 }
