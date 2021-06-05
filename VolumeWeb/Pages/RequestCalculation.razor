@@ -1,0 +1,58 @@
+﻿@page "/RequestCalculation"
+@using VolumeWeb.Models
+@using VolumeWeb.Data
+@using Microsoft.AspNetCore.Components
+
+@inject NavigationManager NavigationManager
+@inject CalculationService CalculationService
+
+<h3>RequestCalculation</h3>
+
+@if (volumeType == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <EditForm Model="@newVolume" OnValidSubmit="@RequestCalculateVolume">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        <div class="form-group"> Height:<br/> <InputNumber @bind-Value="newVolume.Height"/> </div>
+        <div class="form-group"> Radius:<br/> <InputNumber @bind-Value="newVolume.Radius"/> </div>
+
+
+        <div class="form-group">
+            Type: <br/>
+            <InputSelect @bind-Value="selectedType">
+                <option value=""> Select Type </option>
+                
+                @foreach (var type in volumeType)
+                {
+                    <option value=""> @volumeType </option>
+                }
+            </InputSelect>
+        </div>
+
+        <p class="actions">
+            <button class="btn btn-outline-dark" type="submit">Create</button>
+        </p>
+    </EditForm>
+}
+
+@code {
+    
+    private VolumeResult newVolume = new VolumeResult();
+    private List<string> volumeType = new List<string>() {"Cylinder", "Cone"};
+    private string selectedType;
+    
+    
+    private async Task RequestCalculateVolume()
+    {
+        await CalculationService.RequestNewCalculation(newVolume, selectedType);
+        NavigationManager.NavigateTo("/ViewAllCalculations");
+    }
+    
+}
